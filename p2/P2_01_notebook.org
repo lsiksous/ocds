@@ -1,0 +1,521 @@
+#+TITLE: Analysez des données de systèmes éducatifs
+#+PROPERTY: header-args :session py :async yes
+
+https://openclassrooms.com/fr/paths/164/projects/627/assignment
+
+dépenses publiques d'éducation
+taille du marché
+
+* Preamble
+#+begin_src jupyter-python :results output :exports both
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+#+end_src
+
+#+RESULTS:
+
+* Objectifs
+Déterminer si les [[https://datacatalog.worldbank.org/dataset/education-statistics][données sur l’éducation de la banque mondiale]] permettent
+d’informer le projet d’expansion de l'entreprise.
+- Quels sont les pays avec un fort potentiel de clients pour nos services ?
+- Pour chacun de ces pays, quelle sera l’évolution de ce potentiel de clients ?
+- Dans quels pays l'entreprise doit-elle opérer en priorité ?
+
+* Analyse exploratoire
+- Valider la qualité de ce jeu de données (comporte-t-il beaucoup de données
+  manquantes, dupliquées ?)
+- Décrire les informations contenues dans le jeu de données (nombre de colonnes
+  ? nombre de lignes ?)
+- Sélectionner les informations qui semblent pertinentes pour répondre à la
+  problématique (quelles sont les colonnes contenant des informations qui
+  peuvent être utiles pour répondre à la problématique de l’entreprise ?)
+- Déterminer des ordres de grandeurs des indicateurs statistiques classiques
+  pour les différentes zones géographiques et pays du monde
+  (moyenne/médiane/écart-type par pays et par continent ou bloc géographique)
+  
+** Objectif 1 : Créer une boucle for pour récupérer pour chaque fichier le nombre de ligne , de variable , le type de variable et le nombre de valeur manquante
+#+begin_src shell :results output raw
+ls data/  
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src jupyter-python :results output :exports both
+ed_sets = {'country_series': 'EdStatsCountry-Series.csv',
+           'foot_note': 'EdStatsFootNote.csv',
+           'country': 'EdStatsCountry.csv',
+           'series': 'EdStatsSeries.csv',
+           'data': 'EdStatsData.csv'}
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :results output :exports both
+for key, val in ed_sets.items():
+    exec("file = 'data/" + val + "'")
+    exec(key + "= pd.read_csv(file)")
+    print("--- " + val)
+    exec("print(" + key + ".shape)")
+    exec("print(" + key + ".isna().sum())")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+--- EdStatsCountry-Series.csv
+(613, 4)
+CountryCode      0
+SeriesCode       0
+DESCRIPTION      0
+Unnamed: 3     613
+dtype: int64
+--- EdStatsFootNote.csv
+(643638, 5)
+CountryCode         0
+SeriesCode          0
+Year                0
+DESCRIPTION         0
+Unnamed: 4     643638
+dtype: int64
+--- EdStatsCountry.csv
+(241, 32)
+Country Code                                           0
+Short Name                                             0
+Table Name                                             0
+Long Name                                              0
+2-alpha code                                           3
+Currency Unit                                         26
+Special Notes                                         96
+Region                                                27
+Income Group                                          27
+WB-2 code                                              1
+National accounts base year                           36
+National accounts reference year                     209
+SNA price valuation                                   44
+Lending category                                      97
+Other groups                                         183
+System of National Accounts                           26
+Alternative conversion factor                        194
+PPP survey year                                       96
+Balance of Payments Manual in use                     60
+External debt Reporting status                       117
+System of trade                                       41
+Government Accounting concept                         80
+IMF data dissemination standard                       60
+Latest population census                              28
+Latest household survey                              100
+Source of most recent Income and expenditure data     81
+Vital registration complete                          130
+Latest agricultural census                            99
+Latest industrial data                               134
+Latest trade data                                     56
+Latest water withdrawal data                          62
+Unnamed: 31                                          241
+dtype: int64
+--- EdStatsSeries.csv
+(3665, 21)
+Series Code                               0
+Topic                                     0
+Indicator Name                            0
+Short definition                       1509
+Long definition                           0
+Unit of measure                        3665
+Periodicity                            3566
+Base Period                            3351
+Other notes                            3113
+Aggregation method                     3618
+Limitations and exceptions             3651
+Notes from original source             3665
+General comments                       3651
+Source                                    0
+Statistical concept and methodology    3642
+Development relevance                  3662
+Related source links                   3450
+Other web links                        3665
+Related indicators                     3665
+License Type                           3665
+Unnamed: 20                            3665
+dtype: int64
+--- EdStatsData.csv
+(886930, 70)
+Country Name           0
+Country Code           0
+Indicator Name         0
+Indicator Code         0
+1970              814642
+                   ...  
+2085              835494
+2090              835494
+2095              835494
+2100              835494
+Unnamed: 69       886930
+Length: 70, dtype: int64
+#+end_example
+
+- We can safely remove the last column of all the datasets:
+
+#+begin_src jupyter-python :results output :exports both
+del data['Unnamed: 69']
+del series['Unnamed: 20']
+del country['Unnamed: 31']
+del foot_note['Unnamed: 4']
+del country_series['Unnamed: 3']
+#+end_src 
+
+#+RESULTS:
+
+- Do we find every indicator from the series table in our main dataset ?
+#+begin_src jupyter-python :results output :exports both
+print(len(data['Indicator Code'].unique()))
+#+end_src 
+
+#+RESULTS:
+: 3665
+
+- 3665 indicators for 241 countries equals to 883 265, a little less than the
+  886 930 rows of our main data. Do we have the same number of countries in the
+  latter ?
+
+  #+begin_src jupyter-python :results output :exports both
+print(len(data['Country Code'].unique()))
+  #+end_src
+
+  #+RESULTS:
+  : 242
+
+#+begin_src jupyter-python :results output :exports both
+  for i in list(set(data['Country Code'].unique()) - set(country['Country Code'].unique())):
+      print(data.loc[data['Country Code'] == i])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+                  Country Name Country Code  \
+190580  British Virgin Islands          VGB   
+190581  British Virgin Islands          VGB   
+190582  British Virgin Islands          VGB   
+190583  British Virgin Islands          VGB   
+190584  British Virgin Islands          VGB   
+...                        ...          ...   
+194240  British Virgin Islands          VGB   
+194241  British Virgin Islands          VGB   
+194242  British Virgin Islands          VGB   
+194243  British Virgin Islands          VGB   
+194244  British Virgin Islands          VGB   
+
+                                           Indicator Name  \
+190580  Adjusted net enrolment rate, lower secondary, ...   
+190581  Adjusted net enrolment rate, lower secondary, ...   
+190582  Adjusted net enrolment rate, lower secondary, ...   
+190583  Adjusted net enrolment rate, lower secondary, ...   
+190584  Adjusted net enrolment rate, primary, both sex...   
+...                                                   ...   
+194240  Youth illiterate population, 15-24 years, male...   
+194241  Youth literacy rate, population 15-24 years, b...   
+194242  Youth literacy rate, population 15-24 years, f...   
+194243  Youth literacy rate, population 15-24 years, g...   
+194244  Youth literacy rate, population 15-24 years, m...   
+
+              Indicator Code  1970  1971  1972  1973  1974  1975  ...  2055  \
+190580            UIS.NERA.2   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+190581          UIS.NERA.2.F   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+190582        UIS.NERA.2.GPI   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+190583          UIS.NERA.2.M   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+190584           SE.PRM.TENR   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+...                      ...   ...   ...   ...   ...   ...   ...  ...   ...   
+194240      UIS.LP.AG15T24.M   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+194241     SE.ADT.1524.LT.ZS   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+194242  SE.ADT.1524.LT.FE.ZS   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+194243  SE.ADT.1524.LT.FM.ZS   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+194244  SE.ADT.1524.LT.MA.ZS   NaN   NaN   NaN   NaN   NaN   NaN  ...   NaN   
+
+        2060  2065  2070  2075  2080  2085  2090  2095  2100  
+190580   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+190581   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+190582   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+190583   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+190584   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+...      ...   ...   ...   ...   ...   ...   ...   ...   ...  
+194240   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+194241   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+194242   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+194243   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+194244   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN  
+
+[3665 rows x 69 columns]
+#+end_example
+
+#+begin_src jupyter-python :results output :exports both
+  print(country[country['Long Name'].str.contains('Islands')])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+    Country Code                Short Name                Table Name  \
+35           CHI           Channel Islands           Channel Islands   
+48           CYM            Cayman Islands            Cayman Islands   
+72           FRO            Faeroe Islands            Faeroe Islands   
+142          MHL          Marshall Islands          Marshall Islands   
+151          MNP  Northern Mariana Islands  Northern Mariana Islands   
+192          SLB           Solomon Islands           Solomon Islands   
+210          TCA  Turks and Caicos Islands  Turks and Caicos Islands   
+231          VIR            Virgin Islands     Virgin Islands (U.S.)   
+
+                                        Long Name 2-alpha code  \
+35                                Channel Islands          NaN   
+48                                 Cayman Islands           KY   
+72                                 Faeroe Islands           FO   
+142              Republic of the Marshall Islands           MH   
+151  Commonwealth of the Northern Mariana Islands           MP   
+192                               Solomon Islands           SB   
+210                      Turks and Caicos Islands           TC   
+231           Virgin Islands of the United States           VI   
+
+              Currency Unit  \
+35           Pound sterling   
+48    Cayman Islands dollar   
+72             Danish krone   
+142             U.S. dollar   
+151             U.S. dollar   
+192  Solomon Islands dollar   
+210             U.S. dollar   
+231             U.S. dollar   
+
+                                         Special Notes  \
+35                                                 NaN   
+48                                                 NaN   
+72                                                 NaN   
+142  Fiscal year ends on September 30; reporting pe...   
+151                                                NaN   
+192  National accounts data have been revised from ...   
+210                                                NaN   
+231                                                NaN   
+
+                        Region          Income Group WB-2 code  ...  \
+35       Europe & Central Asia  High income: nonOECD        JG  ...   
+48   Latin America & Caribbean  High income: nonOECD        KY  ...   
+72       Europe & Central Asia  High income: nonOECD        FO  ...   
+142        East Asia & Pacific   Upper middle income        MH  ...   
+151        East Asia & Pacific  High income: nonOECD        MP  ...   
+192        East Asia & Pacific   Lower middle income        SB  ...   
+210  Latin America & Caribbean  High income: nonOECD        TC  ...   
+231  Latin America & Caribbean  High income: nonOECD        VI  ...   
+
+    Government Accounting concept           IMF data dissemination standard  \
+35                            NaN                                       NaN   
+48                            NaN                                       NaN   
+72                            NaN                                       NaN   
+142                           NaN                                       NaN   
+151                           NaN                                       NaN   
+192                           NaN  General Data Dissemination System (GDDS)   
+210                           NaN                                       NaN   
+231                           NaN                                       NaN   
+
+          Latest population census Latest household survey  \
+35   Guernsey: 2009; Jersey: 2011.                     NaN   
+48                            2010                     NaN   
+72                            2011                     NaN   
+142                           2011                     NaN   
+151                           2010                     NaN   
+192                           2009                     NaN   
+210                           2012                     NaN   
+231                           2010                     NaN   
+
+    Source of most recent Income and expenditure data  \
+35                                                NaN   
+48                                                NaN   
+72                                                NaN   
+142                                               NaN   
+151                                               NaN   
+192        Integrated household survey (IHS), 2005/06   
+210                                               NaN   
+231                                               NaN   
+
+                          Vital registration complete  \
+35   Yes. Vital registration for Guernsey and Jersey.   
+48                                                Yes   
+72                                                Yes   
+142                                               NaN   
+151                                               NaN   
+192                                               NaN   
+210                                               Yes   
+231                                               Yes   
+
+               Latest agricultural census Latest industrial data  \
+35                                    NaN                    NaN   
+48                                    NaN                    NaN   
+72                                    NaN                    NaN   
+142  2011. Population and Housing Census.                    NaN   
+151                                  2007                    NaN   
+192                               2012/13                    NaN   
+210                                   NaN                    NaN   
+231                                  2007                    NaN   
+
+    Latest trade data Latest water withdrawal data  
+35                NaN                          NaN  
+48                NaN                          NaN  
+72             2009.0                          NaN  
+142               NaN                          NaN  
+151               NaN                          NaN  
+192            2012.0                          NaN  
+210            2012.0                          NaN  
+231               NaN                          NaN  
+
+[8 rows x 31 columns]
+#+end_example
+
+** Objectif 2 : Identifier les variables inutilisables
+
+#+begin_src jupyter-python :results file :var matplot_lib_filename=(org-babel-temp-file "figure" ".png") :exports both :async no
+from joypy import joyplot
+
+cols = data.columns
+print(cols)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+#+begin_example
+
+KeyErrorTraceback (most recent call last)
+~/.pyenv/versions/miniconda3-latest/lib/python3.8/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
+   2894             try:
+-> 2895                 return self._engine.get_loc(casted_key)
+   2896             except KeyError as err:
+
+pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
+
+pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
+
+pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.PyObjectHashTable.get_item()
+
+pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.PyObjectHashTable.get_item()
+
+KeyError: 1000
+
+The above exception was the direct cause of the following exception:
+
+KeyErrorTraceback (most recent call last)
+<ipython-input-6-8c16469f5f4d> in <module>
+      7 plt.savefig(matplot_lib_filename)
+      8 matplot_lib_filename
+----> 9 data[1000]
+
+~/.pyenv/versions/miniconda3-latest/lib/python3.8/site-packages/pandas/core/frame.py in __getitem__(self, key)
+   2900             if self.columns.nlevels > 1:
+   2901                 return self._getitem_multilevel(key)
+-> 2902             indexer = self.columns.get_loc(key)
+   2903             if is_integer(indexer):
+   2904                 indexer = [indexer]
+
+~/.pyenv/versions/miniconda3-latest/lib/python3.8/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
+   2895                 return self._engine.get_loc(casted_key)
+   2896             except KeyError as err:
+-> 2897                 raise KeyError(key) from err
+   2898 
+   2899         if tolerance is not None:
+
+KeyError: 1000
+#+end_example
+: <Figure size 432x288 with 0 Axes>
+:END:
+
+** Objectif 3 : Remplacer les valeurs manquantes sur les autres variables / gérer les valeurs aberrantes
+** Objectif 4 : Ecrire un descriptif de chaque fichier
+** Objectif 5 : Formulation de la problématique et comment y répondre
+
+** Objectif 6 : Réfléchir aux variables pour répondre a la problématique
+
+** Objectif 7 : Commencer le support
+
+* Addendum
+** Flip a coin
+#+begin_src jupyter-python :results output :exports both
+import random
+
+bet = 0
+n=1000000
+
+def flip(p):
+    return 1 if random.random() < p else -1
+
+def play():
+    if flip(0.5) == 1:
+        return flip(0.49)
+    else:
+        if bet % 3 == 0:
+            return flip(0.09)
+        else:
+            return flip(0.74)
+
+for i in range(n):
+    bet += play()
+
+print(bet)
+#+end_src
+
+#+RESULTS:
+: 6174
+
+** Throw a dice
+#+begin_src jupyter-python :results output :exports both
+m=0
+n=0
+
+for i in range(5):
+    l = [random.randint(1,6) for i in range(10000)]
+    s = random.choices(l, k=1000)
+    m += s.count(6)/10000
+    n += s.count(4)/1000
+
+print(m/5*100, n/5*100)
+#+end_src 
+
+#+RESULTS:
+: 1.704 16.0
+
+** Loi normale
+#+begin_src jupyter-python :results file :var matplot_lib_filename=(org-babel-temp-file "figure" ".png") :exports both
+%matplotlib inline  
+import numpy as np
+import matplotlib.pyplot as plt
+from math import sqrt, pi, exp
+
+domaine = range(-100,100)
+mu = 50
+sigma = 5
+
+# Notez l'utilisation du mot clé lambda. Il est très bien expliqué dans le cours
+# "Apprenez à programmer en Python" sur OpenClassrooms.
+f = lambda x : 1/(sqrt(2*pi*pow(sigma,2))) * exp(-pow((x-mu),2)/(2*pow(sigma,2)))
+
+y = [f(x) for x in domaine]
+plot = plt.plot(domaine, y)
+
+plt.savefig(matplot_lib_filename)
+matplot_lib_filename
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: /var/folders/lr/51tf4dc1371fb0bcvf3f1gcc0000gp/T/babel-koNZOe/figurecbcUVY.png
+[[file:./.ob-jupyter/a3451e96e8295f5c2bb50db5d599b43607a3c8f0.png]]
+:END:
+
+** Théorème central limite
+ce théorème déclare que toute somme de variables aléatoires indépendantes et
+identiquement distribuées tend vers une variable aléatoire gaussienne.
+
+#+begin_src jupyter-python :results file :var matplot_lib_filename=(org-babel-temp-file "figure" ".png") :exports both
+matrice_aleatoire = np.random.rand(10000,100000)
+sommes = np.sum(matrice_aleatoire,0)
+plot = plt.hist(sommes, bins=100)
+
+plt.savefig(matplot_lib_filename)
+matplot_lib_filename
+#+end_src
+

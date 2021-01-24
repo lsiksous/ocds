@@ -1,0 +1,30 @@
+#+TITLE: Analysez des données de systèmes éducatifs
+#+PROPERTY: header-args :session py
+
+https://openclassrooms.com/fr/paths/164/projects/627/assignment
+
+* Objectifs
+Déterminer si les [[https://datacatalog.worldbank.org/dataset/education-statistics][données sur l’éducation de la banque mondiale]] permettent
+d’informer le projet d’expansion de l'entreprise.
+- Quels sont les pays avec un fort potentiel de clients pour nos services ?
+- Pour chacun de ces pays, quelle sera l’évolution de ce potentiel de clients ?
+- Dans quels pays l'entreprise doit-elle opérer en priorité ?
+
+* Analyse exploratoire
+- Valider la qualité de ce jeu de données (comporte-t-il beaucoup de données
+  manquantes, dupliquées ?)
+- Décrire les informations contenues dans le jeu de données (nombre de colonnes
+  ? nombre de lignes ?)
+- Sélectionner les informations qui semblent pertinentes pour répondre à la
+  problématique (quelles sont les colonnes contenant des informations qui
+  peuvent être utiles pour répondre à la problématique de l’entreprise ?)
+- Déterminer des ordres de grandeurs des indicateurs statistiques classiques
+  pour les différentes zones géographiques et pays du monde
+  (moyenne/médiane/écart-type par pays et par continent ou bloc géographique)
+
+* Livrables attendus
+** Notebook
+[[file:P2_01_notebook.org]]
+
+** Support de présentation
+[[file:P2_02_support.org]]

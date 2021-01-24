@@ -1,0 +1,157 @@
+project nil "Formation Data Scientist" "1.0" 2020-11-20 - 2022-05-10 {
+  timingresolution 15 min
+  timezone "Europe/Paris"
+  dailyworkinghours 5
+  now 2020-11-22
+  scenario plan "Plan" { scenario actual "Actual Scenario" }
+  weekstartsmonday 
+  workinghours mon, tue, wed, sat, sun off
+}
+shift s40 "Part time shift" {
+  workinghours wed, thu, fri off
+}
+resource lss "Laurent Siksous" {
+  limits { dailymax 4h }
+  rate 500
+}
+task formation "Formation Data Scientist" {
+  task jalons "Jalons" {
+    task p01 "Soutenance P1" {
+      depends !!tasks.projet.s01
+      milestone
+    }
+    task p02 "Soutenance P2" {
+      depends !!tasks.projet__2.s02
+      milestone
+    }
+    task p03 "Soutenance P3" {
+      depends !!tasks.projet__3.s03
+      milestone
+    }
+    task p04 "Soutenance P4" {
+      depends !!tasks.projet__4.s04
+      milestone
+    }
+    task p05 "Soutenance P5" {
+      depends !!tasks.projet__5.s05
+      milestone
+    }
+    task p06 "Soutenance P6" {
+      depends !!tasks.projet__6.s06
+      milestone
+    }
+    task p07 "Soutenance P7" {
+      depends !!tasks.projet__7.s07
+      milestone
+    }
+    task p08 "Soutenance P8" {
+      depends !!tasks.projet__8.s08
+      milestone
+    }
+  }
+  task tasks "Tasks" {
+    task projet "Projet 1" {
+      task s01 "Définissez votre stratégie d'apprentissage" {
+        purge allocate
+        allocate lss
+        complete 0
+        effort 10h
+      }
+    }
+    task projet__2 "Projet 2" {
+      task s02 "Analysez des données de systèmes éducatifs (60h)" {
+        depends !!projet.s01
+        purge allocate
+        allocate lss
+        complete 0
+        effort 60h
+      }
+    }
+    task projet__3 "Projet 3" {
+      task s03 "Concevez une application au service de la santé publique (70h)" {
+        depends !!projet__2.s02
+        purge allocate
+        allocate lss
+        complete 0
+        effort 70h
+      }
+    }
+    task projet__4 "Projet 4" {
+      task s04 "Anticipez les besoins en consommation électrique de bâtiments (100h)" {
+        depends !!projet__3.s03
+        purge allocate
+        allocate lss
+        complete 0
+        effort 100h
+      }
+    }
+    task projet__5 "Projet 5" {
+      task s05 "Segmentez des clients d'un site e-commerce (70h)" {
+        depends !!projet__4.s04
+        purge allocate
+        allocate lss
+        complete 0
+        effort 70h
+      }
+    }
+    task projet__6 "Projet 6" {
+      task s06 "Classifiez automatiquement des biens de consommation (100h)" {
+        depends !!projet__5.s05
+        purge allocate
+        allocate lss
+        complete 0
+        effort 100h
+      }
+    }
+    task projet__7 "Projet 7" {
+      task s07 "Implémentez un modèle de scoring (120h)" {
+        depends !!projet__6.s06
+        purge allocate
+        allocate lss
+        complete 0
+        effort 120h
+      }
+    }
+    task projet__8 "Projet 8" {
+      task s08 "Déployez un modèle dans le cloud (70h)" {
+        depends !!projet__7.s07
+        purge allocate
+        allocate lss
+        complete 0
+        effort 70h
+      }
+    }
+  }
+}
+textreport report "Plan" {
+  formats html
+  header '== Formation Data Scientist Openclassrooms x Centrale Supélec @ Ikkoé =='
+
+  center -8<-
+    [#Plan Plan] | [#Resource_Allocation Resource Allocation]
+    ----
+    === Plan ===
+    <[report id="plan"]>
+    ----
+    === Resource Allocation ===
+    <[report id="resourceGraph"]>
+  ->8-
+}
+
+# A traditional Gantt chart with a project overview.
+taskreport plan "" {
+  headline "Project Plan"
+  columns bsi, name, start, end, effort, chart
+  loadunit shortauto
+  hideresource 1
+}
+
+# A graph showing resource allocation. It identifies whether each
+# resource is under- or over-allocated for.
+resourcereport resourceGraph "" {
+  headline "Resource Allocation Graph"
+  columns no, name, effort, weekly
+  loadunit shortauto
+  hidetask ~(isleaf() & isleaf_())
+  sorttasks plan.start.up
+}

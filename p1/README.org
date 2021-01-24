@@ -1,0 +1,136 @@
+#+TITLE: OpenClassrooms - Data Scientist
+#+SUBTITLE: Stratégie d'apprentissage 
+#+DATE: 26 Novembre 2020
+
+* Introduction
+
+Ce document fait partie des livrables du projet "Définissez votre stratégie
+d'apprentissage" de la formation Openclassrooms Data Scientist dont le programme
+est consultable à : https://openclassrooms.com/fr/paths/164-data-scientist
+
+* Présentation de l'étudiant
+
+De formation universitaire Bac +2 en Mathématiques Physique &
+Informatique, j'ai débuté une carrière d'informaticien en 1997 dans le
+domaine du Grand Système IBM. J'ai d'abord acquis la compétence
+d'Ingénieur Système & Réseaux z/OS spécialisé sur les technologies
+OPEN (Unix, TCP/IP) et la sécurité. Formateur tout au long de mon
+parcours sur ces technologies pour le compte d'IBM, j'ai évolué peu à
+peu vers des rôles de conseil, d'encadrement (Responsable de centre de
+services et de de formation, Interim Manager, Chef de projet), de
+commercial puis au final de dirigeant d'entreprise ESN.
+
+Dans la seconde partie de ma carrière, j'ai choisi de me réorienter
+dans le domaine des études et du développement sur le constat que
+l'émergence d'Internet représentait d'abord une formidable profusion
+de données nouvelles et la possibilité tout aussi enthousiasmante d'en
+exploiter des opportunités insoupçonnables. Je me présente ainsi au
+seuil de cette discipline qu'est la Data Science afin d' aider à la
+compréhension des phénomènes et à la décision, dans l'entreprise bien
+sûr comme celles nombreuses que j'ai pu étudiées en tant que
+prestataire où en tant que dirigeant, mais également aux enjeux et aux
+destinées du monde contemporain.
+
+Mes expériences de dirigeant d'ESN dans le secteur bancassurance
+notamment, mais aussi d'ingénieur Système z/OS & Unix sur le Mainframe
+IBM où résident historiquement de grandes masses de données et enfin,
+de formateur, me permettent d'envisager d'apporter un plus aux seins
+d'équipes de spécialistes comme passeur d'exigences et de langage
+aussi bien techniques que métier pour mettre au point des processus
+efficients d'exploitation de données.
+
+* Alternance
+
+Je débute la formation en contrat de professionalisation au sein de l'entreprise
+Ikkoé. Cette entreprise créée en 2017, mets à disposition un configurateur en
+mode SAAS pour des entrerprises qui souhaitent améliorer l'expérience utilisateur
+de leurs clients en leur offrant la possibilité de personnaliser eux-mêmes les
+produits de leur site.
+
+Mon implication est cruciale dans les projets d'Ikkoé qui mise beaucoup sur l'IA
+afin d'offrir un service unique d'aide à la création de produits personalisés.
+
+* Objectifs
+
+Mon objectif à court terme (1 mois) est
+
+- de réussir mon intégration au sein d'Ikkoé en produisant mon premier livrable
+  utile à la société.
+
+- de disposer d'un environnement de travail et d'une boite à outils
+  efficients et scalables en fonction des objectifs de la formation et
+  de la demande du marché (veille, discussion avec mon mentor/réseau
+  d'étudiants et professionnel)
+
+- d'évaluer d'éventuelles lacunes dans mes connaissances nécessaires à
+  la bonne compréhension de la formation et les renforcer le cas échéant
+  par des activités complémentaires (livres, MOOC etc ) [fn:1]
+
+Mon objectif à moyen terme (6 mois) est
+
+- d'augmenter ma productivité, raffiner mon environnement de travail
+  et ma boite à outils afin d'augmenter ma célérité
+
+- d'avoir suivi l'ensemble des cours OC
+
+- d'agrandir mon réseau à partir de mes compétences acquises, d'un
+  blog et de mon portfolio, partager du code sur Github,
+  participer à des compétitions Kaggle...
+
+Mon objectif à long terme (à l'issue de la formation) est
+
+- d'être en mesure d'identifier de nouvelles compétences à acquérir
+  pour combler un éventuel gap avec la demande du marché et viser de
+  nouvelles certifications dans la Data Science et l'IA
+
+- de publier un travail de recherche autour des projets menés au sein d'Ikkoé.
+
+- de poursuivre mon parcours au sein de cette entrerprise en pleine croissance,
+  participer à structurer son pôle Data [fn:2]
+
+
+[fn:1] N'ayant plus étudié académiquement depuis plus de 20 ans et mes
+souvenirs en mathématiques pures me posent encore question en débutant
+cette formation
+
+[fn:2] Mes compétences acauises par le passé dans la gestion de projet et
+d'équipe pourraient m'y aider.
+
+* Plan d'apprentissage
+** Gantt
+
+#+ATTR_LATEX: :width 15cm :options angle=0
+[[./img/pap.png]]
+
+Les tâches de chaque sous-projet seront détaillées au fur et à mesure.
+
+Je consacrerai en moyenne 8h par semaine à la formation.
+
+** Jalons
+
+| Projet                   | Budget | Consommé | complete |       Date |
+|--------------------------+--------+----------+----------+------------|
+| Formation Data Scientist |    600 |        9 |          |            |
+|--------------------------+--------+----------+----------+------------|
+| Jalons                   |        |          |          |            |
+| Soutenance P1            |        |          |          | 2020-11-26 |
+| Soutenance P2            |        |          |          | 2021-01-21 |
+| Soutenance P3            |        |          |          | 2021-03-19 |
+| Soutenance P4            |        |          |          | 2021-06-17 |
+| Soutenance P5            |        |          |          | 2021-08-19 |
+| Soutenance P6            |        |          |          | 2021-11-12 |
+| Soutenance P7            |        |          |          | 2022-02-25 |
+| Soutenance P8            |        |          |          | 2022-04-28 |
+|--------------------------+--------+----------+----------+------------|
+| Tasks                    |    600 |        9 |          |            |
+| Projet 1                 |     10 |        9 |          |            |
+| Projet 2                 |     60 |        0 |          |            |
+| Projet 3                 |     70 |        0 |          |            |
+| Projet 4                 |    100 |        0 |          |            |
+| Projet 5                 |     70 |        0 |          |            |
+| Projet 6                 |    100 |        0 |          |            |
+| Projet 7                 |    120 |        0 |          |            |
+| Projet 8                 |     70 |        0 |          |            |
+
+#+ATTR_LATEX: :width 15cm :options angle=0
+[[./img/post.png]]

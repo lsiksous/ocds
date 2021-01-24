@@ -1,0 +1,188 @@
+#+TITLE: Formation Data Scientist Openclassrooms x Centrale Supélec @ Ikkoé
+
+* Formation Data Scientist                              :taskjuggler_project:
+DEADLINE: <2022-05-10 Tue> SCHEDULED: <2020-11-20 Fri>
+:PROPERTIES:
+:COLUMNS:  %70ITEM(Task) %Effort(Budget){+} %effortdone(Consommé){+} %allocate(Ressource) %complete %BLOCKER %ORDERED
+:complete_ALL: 0 10 20 25 30 40 50 60 75 80 90 100
+:allocate_ALL: lss
+:Effort_ALL:
+:timingresolution: 15 min
+:timezone: "Europe/Paris"
+:workinghours: mon - fri 9:00 - 12:00, 14:00 - 18:00
+:dailyworkinghours: 5
+:weekstartsmonday:
+:workinghours: mon, tue, wed, sat, sun off
+:now: 2020-11-22
+:scenario: plan "Plan" { scenario actual "Actual Scenario" }
+:END:
+
+#+BEGIN: columnview :hlines 2 :id local :maxlevel 3
+| Task                     | Budget | Consommé | Ressource | complete | BLOCKER | ORDERED |
+|--------------------------+--------+----------+-----------+----------+---------+---------|
+| Formation Data Scientist |    600 |        0 |           |          |         |         |
+|--------------------------+--------+----------+-----------+----------+---------+---------|
+| Jalons                   |        |          |           |          |         |         |
+| Soutenance P1            |        |          |           |          |         |         |
+| Soutenance P2            |        |          |           |          |         |         |
+| Soutenance P3            |        |          |           |          |         |         |
+| Soutenance P4            |        |          |           |          |         |         |
+| Soutenance P5            |        |          |           |          |         |         |
+| Soutenance P6            |        |          |           |          |         |         |
+| Soutenance P7            |        |          |           |          |         |         |
+| Soutenance P8            |        |          |           |          |         |         |
+|--------------------------+--------+----------+-----------+----------+---------+---------|
+| Tasks                    |    600 |        0 |           |          |         |         |
+| Projet 1                 |     10 |        0 |           |          |         | t       |
+| Projet 2                 |     60 |        0 |           |          |         | t       |
+| Projet 3                 |     70 |        0 |           |          |         | t       |
+| Projet 4                 |    100 |        0 |           |          |         |         |
+| Projet 5                 |     70 |        0 |           |          |         |         |
+| Projet 6                 |    100 |        0 |           |          |         |         |
+| Projet 7                 |    120 |        0 |           |          |         |         |
+| Projet 8                 |     70 |        0 |           |          |         |         |
+#+END
+** Jalons
+*** Soutenance P1
+    :PROPERTIES: 
+    :task_id: p01
+    :depends: s01
+    :END:
+*** Soutenance P2
+    :PROPERTIES: 
+    :task_id: p02
+    :depends: s02
+    :END:
+*** Soutenance P3
+    :PROPERTIES: 
+    :task_id: p03  
+    :depends: s03
+    :END:
+*** Soutenance P4
+    :PROPERTIES: 
+    :task_id: p04
+    :depends: s04
+    :END:
+*** Soutenance P5
+    :PROPERTIES: 
+    :task_id: p05
+    :depends: s05
+    :END:
+*** Soutenance P6
+    :PROPERTIES: 
+    :task_id: p06
+    :depends: s06
+    :END:
+*** Soutenance P7
+    :PROPERTIES: 
+    :task_id: p07
+    :depends: s07
+    :END:
+*** Soutenance P8
+    :PROPERTIES: 
+    :task_id: p08
+    :depends: s08
+    :END:
+** Tasks
+*** Projet 1
+    :PROPERTIES:
+    :ORDERED: t
+    :END:
+**** Définissez votre stratégie d'apprentissage
+    :PROPERTIES:
+    :task_id: s01
+    :allocate: lss
+    :Effort:   10h
+    :effortdone: 0h
+    :complete: 0
+    :END:
+*** Projet 2
+    :PROPERTIES:
+    :END:
+**** Analysez des données de systèmes éducatifs (60h)
+    :PROPERTIES:
+    :task_id: s02
+    :allocate: lss
+    :Effort:   60h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s01
+    :END:
+
+*** Projet 3
+    :PROPERTIES:
+    :END:
+**** Concevez une application au service de la santé publique (70h)
+    :PROPERTIES:
+    :task_id: s03
+    :allocate: lss
+    :Effort:   70h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s02
+    :END:
+
+*** Projet 4
+**** Anticipez les besoins en consommation électrique de bâtiments (100h)
+    :PROPERTIES:
+    :task_id: s04
+    :allocate: lss
+    :Effort:   100h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s03
+    :END:
+
+*** Projet 5
+**** Segmentez des clients d'un site e-commerce (70h)
+    :PROPERTIES:
+    :task_id: s05
+    :allocate: lss
+    :Effort:   70h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s04
+    :END:
+
+*** Projet 6
+**** Classifiez automatiquement des biens de consommation (100h)
+    :PROPERTIES:
+    :task_id: s06
+    :allocate: lss
+    :Effort:   100h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s05
+    :END:
+
+*** Projet 7
+**** Implémentez un modèle de scoring (120h)
+:PROPERTIES:
+    :task_id:  s07
+    :allocate: lss
+    :Effort:   120h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s06
+    :END:
+*** Projet 8
+**** Déployez un modèle dans le cloud (70h)
+    :PROPERTIES:
+    :task_id: s08
+    :allocate: lss
+    :Effort:   70h
+    :effortdone: 0h
+    :complete: 0
+    :depends: s07
+    :END:
+
+* Ressources 							   :taskjuggler_resource:
+   :PROPERTIES:
+   :COLUMNS:  %30ITEM(Resource) %resource_id %rate
+   :END:
+** Laurent Siksous
+    :PROPERTIES:
+    :resource_id: lss
+    :limits:   { dailymax 4h }
+    :rate: 500
+    :END:

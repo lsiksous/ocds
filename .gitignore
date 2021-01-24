@@ -1,0 +1,6 @@
+.DS_Store
+.#*
+auto/
+*.tex
+.projectile
+p2/data/
