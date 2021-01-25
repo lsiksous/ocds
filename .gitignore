@@ -3,4 +3,5 @@
 auto/
 *.tex
 .projectile
-p2/data/
+data/
+.ipynb_checkpoints/
